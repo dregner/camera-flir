@@ -1,0 +1,18 @@
+contourpy==1.2.1
+cycler==0.12.1
+evdev==1.7.1
+fonttools==4.51.0
+keyboard==0.13.5
+kiwisolver==1.4.5
+matplotlib==3.8.4
+numpy==1.26.4
+opencv-contrib-python==4.9.0.80
+opencv-python==4.9.0.80
+packaging==24.0
+pillow==10.3.0
+pynput==1.7.7
+pyparsing==3.1.2
+python-dateutil==2.9.0.post0
+python-xlib==0.33
+six==1.16.0
+spinnaker-python @ file:///home/daniel/Downloads/spinnaker_python-4.0.0.116-cp310-cp310-linux_x86_64/spinnaker_python-4.0.0.116-cp310-cp310-linux_x86_64.whl#sha256=ba9a776dab28e95102d385371df1ffb50d6ce7317a5d85d85b2bcb2183698852
