@@ -6,37 +6,28 @@ import time
 import os
 import argparse
 
-
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Stereo camera controller')
     parser.add_argument('--save_images', metavar='S', help='Save images', type=bool, default=False)
     args = parser.parse_args()
 
     if args.save_images:
-        path_to_image = '/home/daniel/Pictures/calib_sm2_1'
+        path_to_image = '/home/daniel/Pictures/calib_sm2_binning'
         os.makedirs(path_to_image, exist_ok=True)
         os.makedirs(path_to_image + '/left', exist_ok=True)
         os.makedirs(path_to_image + '/right', exist_ok=True)
 
-    #stereo_ctrl = StereoCameraController(left_serial=16378749, right_serial=16378734) # fringe projection
-    stereo_ctrl = StereoCameraController(left_serial=16378753, right_serial=16378754) # stereo passive
+    # stereo_ctrl = StereoCameraController(left_serial=16378749, right_serial=16378734) # fringe projection
+    # stereo_ctrl = StereoCameraController(left_SN=16378753, right_SN=16378754) # stereo passive
+    stereo_ctrl = StereoCameraController(left_SN=14376429, right_SN=14376435, gige=True)  # stereo ethernet
 
-    # cv2.namedWindow("left", cv2.WINDOW_NORMAL)
-    # cv2.namedWindow("right", cv2.WINDOW_NORMAL)
-    # cv2.resizeWindow('left', stereo_ctrl.get_width_size(stereo_ctrl.left_cam),
-    #                  stereo_ctrl.get_height_size(stereo_ctrl.left_cam))
-    # cv2.resizeWindow('right', stereo_ctrl.get_width_size(stereo_ctrl.right_cam),
-    #                  stereo_ctrl.get_height_size(stereo_ctrl.right_cam))
     try:
         # Set camera parameters
         stereo_ctrl.set_exposure_time(16660.0)  # (us) Para n ter interf. rede elétrica (60 Hz). (1/60s = 0,016 Hz)
         stereo_ctrl.set_exposure_mode(PySpin.ExposureAuto_Off)  # Set exposure mode to manual
         stereo_ctrl.set_gain(1)  # Set gain (dB)
         stereo_ctrl.set_image_format(PySpin.PixelFormat_Mono8)  # Set image format to Mono8
-
+        stereo_ctrl.set_binning(1, 1)
         # Get and print available pixel formats for left and right cameras
         left_pixel_formats = stereo_ctrl.get_available_pixel_formats(stereo_ctrl.left_cam)
         right_pixel_formats = stereo_ctrl.get_available_pixel_formats(stereo_ctrl.right_cam)
@@ -65,7 +56,7 @@ if __name__ == "__main__":
 
             img_concatenate = np.concatenate((left_image, right_image), axis=1)
             cv2.namedWindow('Stereo', cv2.WINDOW_NORMAL)
-            cv2.resizeWindow('Stereo', int(img_concatenate.shape[1]/2), int(img_concatenate.shape[0]/2))
+            cv2.resizeWindow('Stereo', int(img_concatenate.shape[1] / 2), int(img_concatenate.shape[0] / 2))
             cv2.imshow('Stereo', img_concatenate)
             # cv2.imshow('left', left_image)
             # cv2.imshow('right', right_image)
@@ -74,7 +65,7 @@ if __name__ == "__main__":
                 fps = round(frames / (time.time() - start_time), 1)
                 frames = 0
                 start_time = time.time()
-
+            # print(fps)
         # Process images as needed...
 
     finally:
